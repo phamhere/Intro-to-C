@@ -12,18 +12,21 @@ int fizzbuzz(int n)
 {
     int i, counter = 0;
 
+    // iterating through all of n
     for (i = 0; i < n; ++i)
     {
+        // printing out statements based on divisibility of i
         if (i % 3 == 0 && i % 5 == 0)
             printf("FizzBuzz\n");
         else if (i % 3 == 0)
             printf("Fizz\n");
         else if (i % 5 == 0)
             printf("Buzz\n");
+        // otherwise incrementing counter if divisibility checks aren't matched
         else
             counter++;
     }
-
+    // return number of iterations that didn't match the divisibility checks
     return counter;
 }
 
