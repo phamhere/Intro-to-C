@@ -12,7 +12,22 @@
 */
 char *string_dup(char *src)
 {
-
+    int length = string_length(src);
+    // making memory space for the duplicate
+    char *duplicate = malloc(length);
+    // making a copy of duplicate to do pointer arithmetic with
+    char *duplicate_copy = duplicate;
+    // looping through src until hitting the null char
+    while (*src != '\0')
+    {
+        // mapping src values to duplicate values
+        *duplicate_copy = *src;
+        src++;
+        duplicate_copy++;
+    }
+    // adding null char to end of duplicate string
+    *duplicate_copy = '\0';
+    return duplicate;
 }
 
 /*
@@ -24,7 +39,19 @@ char *string_dup(char *src)
 */
 void mem_copy(void *dest, const void *src, int n)
 {
+    // casting dest and src into char pointers
+    char *cast_dest = (char *)dest;
+    char *cast_src = (char *)src;
+    int i;
 
+    // looping through cast_src n times
+    for (i = 0; i < n; i++)
+    {
+        // mapping values of cast_src to cast_dest
+        *cast_dest = *cast_src;
+        cast_dest++;
+        cast_src++;
+    }
 }
 
 /*
@@ -40,7 +67,31 @@ void mem_copy(void *dest, const void *src, int n)
 */
 void *resize_memory(void *ptr, int old_size, int new_size)
 {
+    // making new memory allocation to transfer data to
+    char *new_malloc = malloc(new_size);
+    char *cast_ptr = (char *)ptr;
+    int i;
 
+    if (old_size < new_size)
+    {
+        // looping to old_size value in old malloc
+        for (i = 0; i < old_size; i++)
+        {
+            // mapping values in old malloc to new malloc
+            *(new_malloc + i) = *(cast_ptr + i);
+        }
+    }
+    else if (old_size >= new_size)
+    {
+        // looping to new_size value in old malloc
+        for (i = 0; i < new_size; i++)
+        {
+            // mapping values in old malloc to new malloc
+            *(new_malloc + i) = *(cast_ptr + i);
+        }
+    }
+
+    return new_malloc;
 }
 
 #ifndef TESTING
@@ -54,12 +105,13 @@ int main(void)
     int numbers[] = {100, 55, 4, 98, 10, 18, 90, 95, 43, 11, 47, 67, 89, 42, 49, 79};
     int n = sizeof(numbers) / sizeof(numbers[0]);
     int *target = malloc(n * sizeof(int));
-    
+
     mem_copy(target, numbers, n * sizeof(int));
 
     printf("Copied array: ");
 
-    for (int i = 0; i < n; i++) {
+    for (int i = 0; i < n; i++)
+    {
         printf("%d ", target[i]);
     }
 
@@ -69,12 +121,13 @@ int main(void)
     char *path = string_dup("/students/");
     int url_length = string_length(url);
     int path_length = string_length(path);
-    
+
     int new_length = url_length - 1 + path_length;
     char *new_url = resize_memory(url, url_length, new_length);
     char *p = new_url + url_length;
 
-    while (*path != '\0') {
+    while (*path != '\0')
+    {
         *p = *path;
         p++;
         path++;
